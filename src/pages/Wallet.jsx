@@ -1,15 +1,22 @@
 
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { deposit, withdraw } from "../store/moneySlice";
 
 const Wallet = () => {
-  const [amount, setAmount] = useState(0);
+  const money = useSelector(state => state.money.amount)
+  // const [amount, setAmount] = useState(0);
+  const dispatch = useDispatch()
 
   function handleDeposit() {
-    setAmount(amount + 10)
+    // setAmount(amount + 10)
+    dispatch(deposit())
   }
 
   function handleWithdraw() {
-    setAmount(amount - 10)
+    // setAmount(amount - 10)
+    dispatch(withdraw())
   }
 
   return (
@@ -22,7 +29,8 @@ const Wallet = () => {
               <button type="button" className="btn btn-success mb-1" onClick={handleDeposit}>Deposit $10</button>
               <button type="button" className="btn btn-danger mt-1" onClick={handleWithdraw}>Withdraw $10</button>
             </div>
-            <h3>${amount}</h3>
+              {/* <h3>${amount}</h3>   */}
+            <h3>${money}</h3>
           </div>
         </div>
       </div>

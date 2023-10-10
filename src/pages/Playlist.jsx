@@ -1,6 +1,12 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addsongs, removeSongs, removeAll } from "../store/songsSlice";
+
 
 const Playlist = () => {
+  const songsFromStore = useSelector(state => state.songs.list)
+  const dispatch = useDispatch()
   const [songs, setSongs] = useState(["Take Five", "Claire de Lune"]);
   const [songTitle, setSongTitle] = useState("");
 
@@ -8,17 +14,20 @@ const Playlist = () => {
     event.preventDefault();
     const title = songTitle.trim()
     if (title !== "") {
-      setSongs([...songs, title]);
+      // setSongs([...songs, title]);
+      dispatch(addsongs(title));
       setSongTitle("");
     }
   }
 
   function handleRemove(songIndex) {
-    setSongs(songs.filter((song, i) => i !== songIndex));
+    // setSongs(songs.filter((song, i) => i !== songIndex));
+    dispatch(removeSongs(songIndex))
   }
 
   function handleRemoveAll() {
-    setSongs([]);
+    // setSongs([]);
+    dispatch(removeAll())
   }
 
   return (
@@ -45,7 +54,8 @@ const Playlist = () => {
         <div className="col-md-6">
           <ul className="list-group mt-5">
             {
-              songs.map((song, index) => (
+              // songs.map((song, index) => (
+                songsFromStore.map((song, index) => (
                 <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
                   <span>{song}</span>
                   <button className="btn btn-outline-danger" onClick={() => handleRemove(index)}>Remove</button>
@@ -55,7 +65,9 @@ const Playlist = () => {
           </ul>
 
           {
-            songs.length > 0 && <button className="btn btn-danger my-2" onClick={handleRemoveAll}>Remove All</button>
+            // songs.length > 0 && <button className="btn btn-danger my-2" onClick={handleRemoveAll}>Remove All</button>
+            songsFromStore.length > 0 && <button className="btn btn-danger my-2" onClick={handleRemoveAll}>Remove All</button>
+
           }
         </div>
 
